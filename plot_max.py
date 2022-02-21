@@ -8,7 +8,7 @@ def c(t: np.ndarray):
 
 plt.figure(figsize=(10, 5))
 year = 300
-t = np.linspace(0, year, year)
+t = np.linspace(0, year + 1, year + 1)
 a1 = 1.60731
 b1 = 0.30196
 r1 = 27.4
@@ -21,14 +21,28 @@ k = 0.9363676
 wd = 0.386 #t/m^3
 cf = 0.44
 kk = np.log(2) / 35
-for t0 in range(5, 25):
+t0_max = -1
+carbon_storage_max = c(t)
+for t0 in range(1, year):
     carbon_storage = c(t - np.floor(t / t0) * t0)
     ii = t0
     while ii <= year:
         carbon_storage += (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
         ii += t0
-    plt.plot(t, carbon_storage, linewidth = 2, label = "t0 = " + str(t0))
-plt.plot(t, c(t), linewidth = 2, label = "t0 = INF")
+    if np.average(carbon_storage) > np.average(carbon_storage_max):
+        carbon_storage_max = carbon_storage
+        t0_max = t0
+plt.plot(t, carbon_storage_max, label = "t0_max = " + str(t0_max))
+for t0 in range(t0_max - 10, t0_max + 11, 5):
+    if t0 == t0_max:
+        continue
+    carbon_storage = c(t - np.floor(t / t0) * t0)
+    ii = t0
+    while ii <= year:
+        carbon_storage += (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
+        ii += t0
+    plt.plot(t, carbon_storage, label = "t0 = " + str(t0))
+plt.plot(t, c(t), label = "t0 = INF")
 plt.legend() 
 plt.xlabel('Time / Year')
 plt.ylabel('Carbon Storage Per Tree / Mt')
