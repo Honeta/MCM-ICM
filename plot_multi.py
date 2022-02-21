@@ -24,12 +24,9 @@ for t0 in range(10, 21):
     cf = 0.44
     kk = np.log(2) / 35
     carbon_storage = c(t - np.floor(t / t0) * t0)
-    #plt.plot(t, y, linewidth = 0.5)
     ii = t0
-    while ii <= year: 
+    while ii <= year:
         carbon_storage += (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
-        #tt = np.linspace(ii, year, year - ii)
-        #plt.plot(tt, c(t0) * np.exp(-kk * (tt - ii)) * (1 - np.exp(-kk)) / kk, linewidth = 0.5)
         ii += t0
     plt.plot(t, carbon_storage, linewidth = 2, label = "t0 = " + str(t0))
 plt.plot(t, c(t), linewidth = 2, label = "t0 = INF")

@@ -7,7 +7,7 @@ def c(t: np.ndarray):
 
 
 plt.figure(figsize=(10, 5))
-year = 100
+year = 1000
 t0 = 15
 t1 = np.linspace(0, year, year)
 t2 = np.linspace(t0, year, year - t0)
