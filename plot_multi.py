@@ -8,10 +8,9 @@ def c(t: np.ndarray):
 
 
 plt.figure(figsize=(10, 5))
-for i in (5, 15):
-    t0 = 5 + i
-    dim = 300
-    t = np.linspace(0, dim, dim)
+for t0 in range(10, 21):
+    year = 1000
+    t = np.linspace(0, year, year)
     a1 = 1.60731
     b1 = 0.30196
     r1 = 27.4
@@ -24,12 +23,17 @@ for i in (5, 15):
     wd = 0.386 #t/m^3
     cf = 0.44
     kk = np.log(2) / 35
-    y = c(t - np.floor(t / t0) * t0)
+    carbon_storage = c(t - np.floor(t / t0) * t0)
+    #plt.plot(t, y, linewidth = 0.5)
     ii = t0
-    while ii <= dim: 
-        y += (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
+    while ii <= year: 
+        carbon_storage += (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
+        #tt = np.linspace(ii, year, year - ii)
+        #plt.plot(tt, c(t0) * np.exp(-kk * (tt - ii)) * (1 - np.exp(-kk)) / kk, linewidth = 0.5)
         ii += t0
-    plt.plot(t, y, linewidth = 2, label = "t0 = " + str(t0))
+    plt.plot(t, carbon_storage, linewidth = 2, label = "t0 = " + str(t0))
 plt.plot(t, c(t), linewidth = 2, label = "t0 = INF")
 plt.legend() 
+plt.xlabel('Time / Year')
+plt.ylabel('Carbon Storage Per Tree / Mt')
 plt.show()

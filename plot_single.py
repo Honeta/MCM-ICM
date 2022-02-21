@@ -7,9 +7,10 @@ def c(t: np.ndarray):
 
 
 plt.figure(figsize=(10, 5))
-t0 = 14
-t1 = np.linspace(0, 100, 100)
-t2 = np.linspace(t0, 100, 100 - t0)
+year = 100
+t0 = 15
+t1 = np.linspace(0, year, year)
+t2 = np.linspace(t0, year, year - t0)
 a1 = 1.60731
 b1 = 0.30196
 r1 = 27.4
@@ -21,14 +22,14 @@ j = 1.912099
 k = 0.9363676
 wd = 0.386 #t/m^3
 cf = 0.44
-y1 = c(t1)
+carbon_storage_old = c(t1)
 kk = np.log(2) / 35
-y2 = c(t2 - t0) + c(t0) * np.exp(-kk * (t2 - t0)) * (1 - np.exp(-kk)) / kk
-plt.plot(t1, y1, linewidth = 2, label = "No Deforestation")
-plt.plot(t2, c(t2- t0), linewidth = 0.5)
-plt.plot(t2, (y2 - c(t2 - t0)), linewidth = 0.5)
-plt.plot(t2, y2, linewidth = 2, label = "Planting After Deforestation")
+carbon_storage_new = c(t2 - t0) + c(t0) * np.exp(-kk * (t2 - t0)) * (1 - np.exp(-kk)) / kk
+plt.plot(t1, carbon_storage_old, linewidth = 2, label = "No Deforestation - Total")
+plt.plot(t2, carbon_storage_new, linewidth = 2, label = "Planting After Deforestation - Total")
+plt.plot(t2, c(t2- t0), linewidth = 0.5, label = "Planting After Deforestation - Newly Planted")
+plt.plot(t2, (carbon_storage_new - c(t2 - t0)), linewidth = 0.5, label = "Planting After Deforestation - Product Decay")
 plt.legend()
 plt.xlabel('Time / Year')
-plt.ylabel('Carbon Storage / Mt')
+plt.ylabel('Carbon Storage Per Tree / Mt')
 plt.show()

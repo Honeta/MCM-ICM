@@ -8,8 +8,8 @@ def c(t: np.ndarray):
 
 
 plt.figure(figsize=(10, 5))
-t0 = 10
-dim = 300
+t0 = 5
+dim = 900
 t = np.linspace(0, dim, dim)
 a1 = 1.60731
 b1 = 0.30196
@@ -23,13 +23,10 @@ k = 0.9363676
 wd = 0.386 #t/m^3
 cf = 0.44
 kk = np.log(2) / 35
-y = c(t0)
+y = (t <= dim / 3 - t0) * c(t - np.floor(t / t0) * t0) + (t > dim / 3 - t0) * c(t - np.floor((t - dim / 3 + t0) / t0 * 2) * t0 * 2)
 ii = t0
 while ii <= dim: 
-    y += (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
-    y += (t >= ii) * c(t0)
-    ii += t0
-    if ii < dim / 2 and ii + t0 > dim / 2:
-        t0 = 20
+    y += (t <= dim / 3) * (t >= ii) * c(t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk + (t > dim / 3) * (t >= ii) * c(2 * t0) * np.exp(-kk * (t - ii)) * (1 - np.exp(-kk)) / kk
+    ii += (ii <= dim / 3) * t0 + (ii > dim / 3) * t0 * 2
 plt.plot(t, y)
 plt.show()
